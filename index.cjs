@@ -68,7 +68,7 @@ io.on("connection", (socket) => {
 
     socket.userId = userId
     console.log(`socket user who has connected : ${socket.userId}`)
-    authUsers.findByIdAndUpdate(userId, {online: true}, {new: true})
+    authUsers.findByIdAndUpdate(userId, {online: true}, {new: true}).then(res => console.log(res))
   })
 
   //typing
