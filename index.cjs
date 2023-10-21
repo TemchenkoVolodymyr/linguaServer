@@ -22,43 +22,60 @@ const authUsers = require('./server/Modules/AuthorizationModules.cjs')
 //   //   methods: ["GET", "POST", "DELETE", "PATCH"]
 //   // }
 // });
-const options = {cors:{
+const options = {
+  cors: {
     origin: "*",
     // secure: true,
     headers: {"Content-Type": "application/json"},
     methods: ["GET", "POST", "DELETE", "PATCH"]
-  }};
-const io = require("socket.io")(server,options)
+  }
+};
+const io = require("socket.io")(server, options)
 
 // working with socket
 
-const users = []
-const connections = []
-
-io.on("connection", socket => {
-  console.log('Success')
-  connections.push(socket);
-
-  socket.on("disconnect", (data) => {
-    connections.slice(connections.indexOf(socket), 1) // delete socket when disconnect
-    console.log('Disconnect')
+// io.on("connection", socket => {
+//   console.log('Success')
+//   connections.push(socket);
+//
+//   socket.on("disconnect", (data) => {
+//     connections.slice(connections.indexOf(socket), 1) // delete socket when disconnect
+//     console.log('Disconnect')
+//   })
+//
+// })
+io.on("connection", (socket) => {
+  console.log(`User has connected ${socket.id}`)
+  socket.on("privateMessage", (id) => {
+    socket.emit("privateResponse", id)
   })
-// console.log('connect')
-//   socket.emit('message', 'Welcome to chat')
-//
-//   // Broadcast when a user  connects
-//   socket.broadcast.emit("message",'A user has joined the chat');
-//
-//   // Runs when client disconnect
-//
-//   socket.on("disconnect",() => {
-//     io.emit('message','A use has left the chat')
-//
-//   })
-//
-//   socket.on('sendMessage',(msg) => {
-//     console.log(msg)
-//   })
+
+// users
+  socket.on('newUser', (userId) => {
+
+    socket.userId = userId
+    authUsers.findByIdAndUpdate(userId, {online: true}, {new: true}).then(user => {
+      socket.emit("connected", user);
+    })
+  })
+
+  //typing
+  socket.on("typing", (user) => {
+    io.emit("userTyping", user)
+  })
+
+  // disconnect  / set online false for  user who was log out
+  socket.on("disconnect", () => {
+    console.log(`User has left ${socket.id}`)
+    if (socket.userId) {
+      authUsers.findByIdAndUpdate(socket.userId, {
+        online: false
+      }, {new: true}).then(user => {
+
+        io.emit("userDisconnected", socket.userId)
+      })
+    }
+  })
 })
 
 
