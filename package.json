@@ -1,13 +1,9 @@
 {
   "name": "vite-project",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
     "server": "nodemon index.cjs"
   },
   "dependencies": {
@@ -15,6 +11,7 @@
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.1",
     "express-rate-limit": "^6.7.1",
@@ -32,8 +29,5 @@
     "socket.io-client": "^4.7.2",
     "stable": "^0.1.8",
     "yarn": "^1.22.19"
-  },
-  "devDependencies": {
-
   }
 }

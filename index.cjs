@@ -9,7 +9,7 @@ const http = require('http')
 const ErrorHandler = require("./server/APIFeatures/ErrorHandler.cjs");
 const server = http.createServer(app);
 const path = require('path')
-
+const dotenv = require('dotenv').config()
 const authUsers = require('./server/Modules/AuthorizationModules.cjs')
 
 // const {Server} = require('socket.io')
@@ -68,7 +68,7 @@ app.options("*", cors());
 app.use(helmet());
 app.use(express.json())
 
-mongoose.connect("mongodb+srv://temcenkovova8:brFMAZAjzkX4ighR@cluster0.4dgfzzn.mongodb.net/LinguaSwap?retryWrites=true&w=majority", {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
