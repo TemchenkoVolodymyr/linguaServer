@@ -82,7 +82,7 @@ io.on("connection", (socket) => {
     if (socket.userId) {
       authUsers.findByIdAndUpdate(socket.userId, {
         online: false
-      }, {new: true})
+      }, {new: true}).then(res => console.log(res))
     }
     // .then(user => {
     //
