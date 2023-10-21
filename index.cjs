@@ -68,8 +68,7 @@ io.on("connection", (socket) => {
 
     socket.userId = userId
     console.log(`socket user who has connected : ${socket.userId}`)
-    authUsers.findByIdAndUpdate(userId, {online: true}, {new: true}).then(res => console.log(res))
-    socket.emit('newUser')
+    authUsers.findByIdAndUpdate(userId, {online: true}, {new: true}).then(res => socket.emit('newUser', res))
   })
 
   //typing
@@ -83,14 +82,8 @@ io.on("connection", (socket) => {
     if (socket.userId) {
       authUsers.findByIdAndUpdate(socket.userId, {
         online: false
-      }, {new: true}).then(res =>   socket.emit('leftUser',res))
+      }, {new: true}).then(res => socket.emit('leftUser', res))
     }
-
-    // .then(user => {
-    //
-    //   io.emit("userDisconnected", socket.userId)
-    // })
-
   })
 })
 
