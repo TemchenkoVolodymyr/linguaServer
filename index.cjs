@@ -4,16 +4,16 @@ const cors = require('cors');
 const app = express()
 const PORT = process.env.PORT || 3000
 const helmet = require("helmet");
-const https = require('https')
+const http = require('http')
 
 const ErrorHandler = require("./server/APIFeatures/ErrorHandler.cjs");
-const server = https.createServer(app);
+const server = http.createServer(app);
 const path = require('path')
 const dotenv = require('dotenv').config()
 const authUsers = require('./server/Modules/AuthorizationModules.cjs')
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
-app.use(cors({origin:"https://linguaswap-9bebd1d452cf.herokuapp.com"}));
-app.options("*", cors());
+app.use(cors({origin:"http://localhost:5173"}));
+app.options("http://localhost:5173", cors());
 app.use(helmet());
 app.use(express.json())
 const {Server} = require('socket.io')
