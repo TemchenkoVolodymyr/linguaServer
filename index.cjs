@@ -69,6 +69,7 @@ io.on("connection", (socket) => {
     socket.userId = userId
     console.log(`socket user who has connected : ${socket.userId}`)
     authUsers.findByIdAndUpdate(userId, {online: true}, {new: true}).then(res => console.log(res))
+    socket.emit('newUser')
   })
 
   //typing
@@ -84,6 +85,7 @@ io.on("connection", (socket) => {
         online: false
       }, {new: true}).then(res => console.log(res))
     }
+    socket.emit('leftUser')
     // .then(user => {
     //
     //   io.emit("userDisconnected", socket.userId)
