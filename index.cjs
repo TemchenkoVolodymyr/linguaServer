@@ -67,6 +67,7 @@ io.on("connection", (socket) => {
   socket.on('newUser', (userId) => {
 
     socket.userId = userId
+    console.log(`socket user who has connected : ${socket.userId}`)
     authUsers.findByIdAndUpdate(userId, {online: true}, {new: true})
   })
 
@@ -77,7 +78,7 @@ io.on("connection", (socket) => {
 
   // disconnect  / set online false for  user who was log out
   socket.on("disconnect", () => {
-    console.log(`User has left ${socket.id}`)
+    console.log(`User id who has left ${socket.userId}`)
 
       authUsers.findByIdAndUpdate(socket.userId, {
         online: false
