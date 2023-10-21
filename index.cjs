@@ -11,26 +11,32 @@ const server = http.createServer(app);
 const path = require('path')
 const dotenv = require('dotenv').config()
 const authUsers = require('./server/Modules/AuthorizationModules.cjs')
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+app.use(cors({origin:"https://linguaswap-9bebd1d452cf.herokuapp.com"}));
+app.options("*", cors());
+app.use(helmet());
+app.use(express.json())
+const {Server} = require('socket.io')
 
-// const {Server} = require('socket.io')
+const io = new Server(server);
 
-// const io = new Server(server, {
-//   // cors: {
-//   //   origin: "*",
-//   //   secure: true,
-//   //   headers: {"Content-Type": "application/json"},
-//   //   methods: ["GET", "POST", "DELETE", "PATCH"]
-//   // }
-// });
-const options = {
-  cors: {
-    origin: "*",
-    // secure: true,
-    headers: {"Content-Type": "application/json"},
-    methods: ["GET", "POST", "DELETE", "PATCH"]
-  }
-};
-const io = require("socket.io")(server, options)
+// {  к 21 строке
+//   cors: {
+//     origin: "https://linguaswap-9bebd1d452cf.herokuapp.com",
+//       secure: true,
+//       headers: {"Content-Type": "application/json"},
+//     methods: ["GET", "POST", "DELETE", "PATCH"]
+//   }
+
+// const options = {
+//   cors: {
+//     origin: "*",
+//     // secure: true,
+//     headers: {"Content-Type": "application/json"},
+//     methods: ["GET", "POST", "DELETE", "PATCH"]
+//   }
+// };
+// const io = require("socket.io")(server, options)
 
 // working with socket
 
@@ -79,11 +85,6 @@ io.on("connection", (socket) => {
 })
 
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
-app.use(cors());
-app.options("*", cors());
-app.use(helmet());
-app.use(express.json())
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
