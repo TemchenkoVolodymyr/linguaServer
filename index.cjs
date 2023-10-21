@@ -65,11 +65,9 @@ io.on("connection", (socket) => {
 
 // users
   socket.on('newUser', (userId) => {
-    console.log(` new user with id : ${userId}`)
+
     socket.userId = userId
-    // authUsers.findByIdAndUpdate(userId, {online: true}, {new: true}).then(user => {
-    //   socket.emit("connected", user);
-    // })
+    authUsers.findByIdAndUpdate(userId, {online: true}, {new: true})
   })
 
   //typing
@@ -80,15 +78,14 @@ io.on("connection", (socket) => {
   // disconnect  / set online false for  user who was log out
   socket.on("disconnect", () => {
     console.log(`User has left ${socket.id}`)
-    // console.log(socket)
-    // if (socket.userId) {
-    //   authUsers.findByIdAndUpdate(socket.userId, {
-    //     online: false
-    //   }, {new: true}).then(user => {
-    //
-    //     io.emit("userDisconnected", socket.userId)
-    //   })
-    // }
+
+      authUsers.findByIdAndUpdate(socket.userId, {
+        online: false
+      }, {new: true}).then(user => {
+
+        io.emit("userDisconnected", socket.userId)
+      })
+
   })
 })
 
