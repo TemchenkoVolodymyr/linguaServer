@@ -59,35 +59,36 @@ const io = new Server(server,{
 // })
 io.on("connection", (socket) => {
   console.log(`User has connected ${socket.id}`)
-  socket.on("privateMessage", (id) => {
-    socket.emit("privateResponse", id)
-  })
+  // socket.on("privateMessage", (id) => {
+  //   socket.emit("privateResponse", id)
+  // })
 
 // users
-  socket.on('newUser', (userId) => {
-
-    socket.userId = userId
-    authUsers.findByIdAndUpdate(userId, {online: true}, {new: true}).then(user => {
-      socket.emit("connected", user);
-    })
-  })
+//   socket.on('newUser', (userId) => {
+// console.log(userId)
+//     socket.userId = userId
+//     authUsers.findByIdAndUpdate(userId, {online: true}, {new: true}).then(user => {
+//       socket.emit("connected", user);
+//     })
+//   })
 
   //typing
-  socket.on("typing", (user) => {
-    io.emit("userTyping", user)
-  })
+  // socket.on("typing", (user) => {
+  //   io.emit("userTyping", user)
+  // })
 
   // disconnect  / set online false for  user who was log out
   socket.on("disconnect", () => {
     console.log(`User has left ${socket.id}`)
-    if (socket.userId) {
-      authUsers.findByIdAndUpdate(socket.userId, {
-        online: false
-      }, {new: true}).then(user => {
-
-        io.emit("userDisconnected", socket.userId)
-      })
-    }
+    console.log(socket)
+    // if (socket.userId) {
+    //   authUsers.findByIdAndUpdate(socket.userId, {
+    //     online: false
+    //   }, {new: true}).then(user => {
+    //
+    //     io.emit("userDisconnected", socket.userId)
+    //   })
+    // }
   })
 })
 
