@@ -9,59 +9,28 @@ const http = require('http')
 const ErrorHandler = require("./server/APIFeatures/ErrorHandler.cjs");
 const server = http.createServer(app);
 const path = require('path')
-const dotenv = require('dotenv').config()
+// const dotenv = require('dotenv').config()
 const authUsers = require('./server/Modules/AuthorizationModules.cjs')
+app.use(helmet());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 app.use(cors({origin: "http://localhost:5173"}));
 app.options("http://localhost:5173", cors());
-app.use(helmet());
 app.use(express.json())
 const {Server} = require('socket.io')
 
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST","PUT","PATCH","DELETE"],
     allowedHeaders: ["lingua-header"],
     credentials: true
   }
 });
 
-// {  к 21 строке
-//   cors: {
-//     origin: "https://linguaswap-9bebd1d452cf.herokuapp.com",
-//       secure: true,
-//       headers: {"Content-Type": "application/json"},
-//     methods: ["GET", "POST", "DELETE", "PATCH"]
-//   }
 
-// const options = {
-//   cors: {
-//     origin: "*",
-//     // secure: true,
-//     headers: {"Content-Type": "application/json"},
-//     methods: ["GET", "POST", "DELETE", "PATCH"]
-//   }
-// };
-// const io = require("socket.io")(server, options)
-
-// working with socket
-
-// io.on("connection", socket => {
-//   console.log('Success')
-//   connections.push(socket);
-//
-//   socket.on("disconnect", (data) => {
-//     connections.slice(connections.indexOf(socket), 1) // delete socket when disconnect
-//     console.log('Disconnect')
-//   })
-//
-// })
 io.on("connection", (socket) => {
   console.log(`User has connected ${socket.id}`)
-  // socket.on("privateMessage", (id) => {
-  //   socket.emit("privateResponse", id)
-  // })
+
 
 // users
   socket.on('newUser', (userId) => {
@@ -93,7 +62,7 @@ io.on("connection", (socket) => {
   })
 })
 
-
+require('dotenv').config()
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -129,45 +98,3 @@ app.all('*', (req, res, next) => {
 server.listen(PORT, () => {
   console.log(`App running on ${PORT}`)
 })
-
-
-// io.on("connection", (socket) => {
-//
-//   // socket.emit("connected", socket.id)
-//   //  users
-//   // authUsers.find({online: true}).then(users => {
-//   //
-//   //   socket.emit("onlineUsers", users)
-//   // });
-//
-//   socket.on("privateMessage", (id) => {
-//     socket.emit("privateResponse", id)
-//   })
-//
-// // users
-//   socket.on('newUser', (userId) => {
-//     console.log('t')
-//     socket.userId = userId
-//     authUsers.findByIdAndUpdate(userId, {online: true}, {new: true}).then(user => {
-//       socket.emit("connected", user);
-//     })
-//   })
-//
-//   //typing
-//   socket.on("typing", (user) => {
-//     io.emit("userTyping", user)
-//   })
-//
-//   // disconnect  / set online false for  user who was log out
-//   socket.on("disconnect", () => {
-//
-//     if (socket.userId) {
-//       authUsers.findByIdAndUpdate(socket.userId, {
-//         online: false
-//       }, {new: true}).then(user => {
-//
-//         io.emit("userDisconnected", socket.userId)
-//       })
-//     }
-//   })
-// })
