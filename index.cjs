@@ -18,7 +18,14 @@ app.use(helmet());
 app.use(express.json())
 const {Server} = require('socket.io')
 
-const io = new Server(server);
+const io = new Server(server,{
+  cors:{
+    origin:"http://localhost:5173",
+    methods:["GET","POST"],
+    allowedHeaders:["lingua-header"],
+    credentials:true
+  }
+});
 
 // {  к 21 строке
 //   cors: {
