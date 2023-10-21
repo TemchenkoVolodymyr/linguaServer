@@ -72,6 +72,11 @@ io.on("connection", (socket) => {
       .then(res => io.emit('newUser', res))
   })
 
+  // messages
+  socket.on("privateMessage", (id) => {
+    io.emit("privateResponse", id)
+  })
+
   //typing
   // socket.on("typing", (user) => {
   //   io.emit("userTyping", user)
