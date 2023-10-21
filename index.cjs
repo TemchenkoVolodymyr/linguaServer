@@ -83,9 +83,9 @@ io.on("connection", (socket) => {
     if (socket.userId) {
       authUsers.findByIdAndUpdate(socket.userId, {
         online: false
-      }, {new: true}).then(res => console.log(res))
+      }, {new: true}).then(res =>   socket.emit('leftUser',res))
     }
-    socket.emit('leftUser')
+
     // .then(user => {
     //
     //   io.emit("userDisconnected", socket.userId)
