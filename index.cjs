@@ -12,18 +12,18 @@ const path = require('path')
 const dotenv = require('dotenv').config()
 const authUsers = require('./server/Modules/AuthorizationModules.cjs')
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
-app.use(cors({origin:"http://localhost:5173"}));
+app.use(cors({origin: "http://localhost:5173"}));
 app.options("http://localhost:5173", cors());
 app.use(helmet());
 app.use(express.json())
 const {Server} = require('socket.io')
 
-const io = new Server(server,{
-  cors:{
-    origin:"http://localhost:5173",
-    methods:["GET","POST"],
-    allowedHeaders:["lingua-header"],
-    credentials:true
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["lingua-header"],
+    credentials: true
   }
 });
 
@@ -64,13 +64,13 @@ io.on("connection", (socket) => {
   // })
 
 // users
-//   socket.on('newUser', (userId) => {
-// console.log(userId)
-//     socket.userId = userId
-//     authUsers.findByIdAndUpdate(userId, {online: true}, {new: true}).then(user => {
-//       socket.emit("connected", user);
-//     })
-//   })
+  socket.on('newUser', (userId) => {
+    console.log(` new user with id : ${userId}`)
+    socket.userId = userId
+    // authUsers.findByIdAndUpdate(userId, {online: true}, {new: true}).then(user => {
+    //   socket.emit("connected", user);
+    // })
+  })
 
   //typing
   // socket.on("typing", (user) => {
@@ -80,7 +80,7 @@ io.on("connection", (socket) => {
   // disconnect  / set online false for  user who was log out
   socket.on("disconnect", () => {
     console.log(`User has left ${socket.id}`)
-    console.log(socket)
+    // console.log(socket)
     // if (socket.userId) {
     //   authUsers.findByIdAndUpdate(socket.userId, {
     //     online: false
@@ -91,7 +91,6 @@ io.on("connection", (socket) => {
     // }
   })
 })
-
 
 
 mongoose.connect(process.env.MONGODB_URI, {
