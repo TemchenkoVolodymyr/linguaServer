@@ -79,13 +79,15 @@ io.on("connection", (socket) => {
   // disconnect  / set online false for  user who was log out
   socket.on("disconnect", () => {
     console.log(`User id who has left ${socket.userId}`)
-
+    if (socket.userId) {
       authUsers.findByIdAndUpdate(socket.userId, {
         online: false
-      }, {new: true}).then(user => {
-
-        io.emit("userDisconnected", socket.userId)
-      })
+      }, {new: true})
+    }
+    // .then(user => {
+    //
+    //   io.emit("userDisconnected", socket.userId)
+    // })
 
   })
 })
