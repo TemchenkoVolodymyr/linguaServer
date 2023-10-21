@@ -4,10 +4,10 @@ const cors = require('cors');
 const app = express()
 const PORT = process.env.PORT || 3000
 const helmet = require("helmet");
-const http = require('http')
+const https = require('https')
 
 const ErrorHandler = require("./server/APIFeatures/ErrorHandler.cjs");
-const server = http.createServer(app);
+const server = https.createServer(app);
 const path = require('path')
 const dotenv = require('dotenv').config()
 const authUsers = require('./server/Modules/AuthorizationModules.cjs')
