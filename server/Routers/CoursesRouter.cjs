@@ -3,7 +3,7 @@ const express = require('express')
 const coursesRouter = express.Router();
 
 const coursesFunctions = require('../Functions/CoursesFunctions.cjs')
-const {upload} = require("../APIFeatures/fileController.cjs");
+const {upload, getFile} = require("../APIFeatures/fileController.cjs");
 
 coursesRouter.route('/singleCourse')
   .get(coursesFunctions.getCourses)
@@ -26,5 +26,6 @@ coursesRouter.route('/upload')
       file: req.file
     })
   })
+   .get((req,res) => getFile(req,res))
 
 module.exports = coursesRouter

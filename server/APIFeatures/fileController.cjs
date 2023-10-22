@@ -37,31 +37,46 @@ const Grid = require('gridfs-stream')
 
 const multer = require('multer')
 const {GridFsStorage} = require("multer-gridfs-storage");
+const router = express.Router()
 
 
-
-const connectToMongoDB = mongoose.createConnection(process.env.MONGODB_URI,{
-   useNewUrlParser:true,
-   useUnifiedTopology:true
+const connectToMongoDB = mongoose.createConnection(process.env.MONGODB_URI, {
+   useNewUrlParser: true,
+   useUnifiedTopology: true
 })
 
 let gfs;
 connectToMongoDB.once('open', () => {
-   gfs = Grid(connectToMongoDB.db,mongoose.mongo);
+   gfs = Grid(connectToMongoDB.db, mongoose.mongo);
    gfs.collection('uploads')
 })
 
 const storage = new GridFsStorage({
-   url:process.env.MONGODB_URI,
-   file:(req,file) => {
-      return new Promise((resolve,reject) => {
+   url: process.env.MONGODB_URI,
+   file: (req, file) => {
+      return new Promise((resolve, reject) => {
          const filename = file.originalname;
-            const fileInfo = {
-               filename:filename,
-               bucketName:'uploads'
-            };
-            resolve(fileInfo)
+         const fileInfo = {
+            filename: filename,
+            bucketName: 'uploads'
+         };
+         resolve(fileInfo)
       })
    }
 })
+
+export const getFile = (req,res) => {
+   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+      if (!file || file.length === 0) {
+         return res.status(404).json({
+            err: 'Файл не существует'
+         });
+      }
+
+      // Создание потока чтения
+      const readStream = gfs.createReadStream(file.filename);
+      readStream.pipe(res);
+   });
+}
+
 exports.upload = multer({storage})
