@@ -18,7 +18,7 @@ coursesRouter.route('/updateMembers/:courseId')
   .patch(coursesFunctions.updateCourse)
 
 
-coursesRouter.route('/upload')
+coursesRouter.route('/upload/:filename?')
   .post(upload.single('file'), (req, res) => {
     console.log(req.file)
     res.status(200).json({
