@@ -65,7 +65,7 @@ const storage = new GridFsStorage({
    }
 })
 
-export const getFile = (req,res) => {
+exports.getFile = (req,res) => {
    gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
       if (!file || file.length === 0) {
          return res.status(404).json({
