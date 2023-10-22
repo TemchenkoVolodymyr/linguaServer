@@ -36,7 +36,8 @@ const mongoose = require('mongoose')
 const Grid = require('gridfs-stream')
 
 const multer = require('multer')
-const {GridFsStorage} = require("multer-gridfs-storage/lib/gridfs.js");
+const {GridFsStorage} = require("multer-gridfs-storage");
+
 
 
 const connectToMongoDB = mongoose.createConnection(process.env.MONGODB_URI,{
