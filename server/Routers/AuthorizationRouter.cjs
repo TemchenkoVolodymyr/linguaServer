@@ -4,6 +4,7 @@ const authRouter = express.Router();
 
 const authFunctions = require('../Functions/AuthorizationFunctions.cjs')
 const file = require("../APIFeatures/fileController.cjs");
+const {upload} = require("../APIFeatures/fileController.cjs");
 
 
 authRouter.route('/user/:token?')
@@ -27,7 +28,7 @@ authRouter.route('/:idUser')
   .get(authFunctions.getUser)
 
 authRouter.route('/profile/image')
-  .post(file.single('image'), (req, res) => {
+  .post(upload.single('file'), (req, res) => {
     console.log(req.file)
     res.status(200).json({
       status: 'succeed',
