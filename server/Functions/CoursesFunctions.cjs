@@ -41,7 +41,7 @@ exports.getCourses = async (req, res) => {
       }
    } else if (idTeacher) {
       filter = {
-         "teacher": idTeacher
+         "teacher.id": idTeacher
       }
    }
 
