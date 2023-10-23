@@ -2,7 +2,8 @@ import multer from "multer";
 import {GridFsStorage} from "multer-gridfs-storage";
 
 
-export const storageFiles = () =>{
+
+exports.storageFiles = () =>{
 
   let fileStorage = multer.diskStorage({
     destination:"uploads",
@@ -18,7 +19,7 @@ export const storageFiles = () =>{
 }
 require('dotenv').config()
 const mongoDb =  process.env.MONGODB_URI
-export const gridStorage = () => {
+exports.gridStorage = () => {
 
   let storageFS = new GridFsStorage({
     mongoDb,
