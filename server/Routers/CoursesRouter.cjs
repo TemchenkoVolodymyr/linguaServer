@@ -1,9 +1,10 @@
 const express = require('express')
-const file = require('../APIFeatures/fileController.cjs')
+// const file = require('../APIFeatures/fileController.cjs')
 const coursesRouter = express.Router();
 
 const coursesFunctions = require('../Functions/CoursesFunctions.cjs')
 const {gridStorage} = require("../APIFeatures/UploadsImage.js");
+const {upload, getFile} = require("../APIFeatures/fileController.cjs");
 
 
 coursesRouter.route('/singleCourse')
@@ -21,15 +22,6 @@ coursesRouter.route('/updateMembers/:courseId')
   .patch(coursesFunctions.updateCourse)
 
 
-// coursesRouter.route('/image')
-//   .post(file.single('image'), (req, res) => {
-//     console.log(req.file)
-//     res.status(200).json({
-//       status: 'succeed',
-//       image: req.file
-//     })
-//   })
-
 coursesRouter.route('/uploads')
   .post(gridStorage().single('file'), (req, res) => {
     try {
@@ -44,5 +36,15 @@ coursesRouter.route('/uploads')
       })
     }
   })
+coursesRouter.route('/upload/:filename?')
+  .post(upload.single('file'), (req, res) => {
+    console.log(req.file)
+    res.status(200).json({
+      status: 'Succeed',
+      file: req.file
+    })
+
+  })
+   .get((req,res) => getFile(req,res))
 
 module.exports = coursesRouter

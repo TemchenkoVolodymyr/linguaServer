@@ -1,8 +1,12 @@
 {
-  "name": "vite-project",
+  "name": "lingua",
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": "18.x",
+    "npm": "7.x"
+  },
   "scripts": {
     "start": "nodemon index.cjs"
   },
