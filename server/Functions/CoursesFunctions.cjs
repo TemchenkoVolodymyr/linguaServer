@@ -66,7 +66,7 @@ exports.getCourse = async (req, res) => {
    const {courseId} = req.params
 
    const course = await Courses.findById(courseId)
-   console.log(course)
+
    if (course) {
       res.status(200).json({
          status: "Succeed",
@@ -76,6 +76,26 @@ exports.getCourse = async (req, res) => {
       res.status(400).json({
          status: "Clear",
          message: "Courses was not found"
+      })
+   }
+}
+
+exports.getCourseByUserId = async (req,res) => {
+
+   const {id} = req.params
+
+   const foundCourse = await Courses.findOne({members:{
+      $in:[id]}});
+
+   if(!foundCourse) {
+      res.status(400).json({
+         status:"Not found",
+         message:"Document has not found"
+      })
+   }else{
+      res.status(200).json({
+         status:"Succeed",
+         foundCourse
       })
    }
 }

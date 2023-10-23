@@ -1,10 +1,14 @@
 const express = require('express')
 const mongoose = require("mongoose");
 const cors = require('cors');
+const bodyParser = require('body-parser')
 const app = express()
 const PORT = process.env.PORT || 3000
 const helmet = require("helmet");
 const http = require('http')
+const multer = require('multer')
+const GridFsStorage = require('multer-gridfs-storage')
+const Grid = require('gridfs-stream')
 
 const ErrorHandler = require("./server/APIFeatures/ErrorHandler.cjs");
 const server = http.createServer(app);
@@ -15,13 +19,16 @@ app.use(helmet());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 app.use(cors({origin: "http://localhost:5173"}));
 app.options("http://localhost:5173", cors());
+
+
 app.use(express.json())
+
 const {Server} = require('socket.io')
 
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
-    methods: ["GET", "POST","PUT","PATCH","DELETE"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["lingua-header"],
     credentials: true
   }
@@ -68,6 +75,12 @@ mongoose.connect(process.env.MONGODB_URI, {
   useCreateIndex: true,
   useFindAndModify: false,
 }).then(() => console.log('DB connection successful'));
+
+
+// uploads image
+
+
+
 
 
 /// routers
