@@ -3,8 +3,10 @@ const express = require('express')
 const coursesRouter = express.Router();
 
 const coursesFunctions = require('../Functions/CoursesFunctions.cjs')
-const {gridStorage} = require("../APIFeatures/UploadsImage.js");
+const gridStorage = require("../APIFeatures/UploadsImage.js");
 const {upload, getFile} = require("../APIFeatures/fileController.cjs");
+
+
 
 
 coursesRouter.route('/singleCourse')
@@ -21,21 +23,6 @@ coursesRouter.route('/course/user/:id')
 coursesRouter.route('/updateMembers/:courseId')
   .patch(coursesFunctions.updateCourse)
 
-
-coursesRouter.route('/uploads')
-  .post(gridStorage().single('file'), (req, res) => {
-    try {
-      res.status(200).json({
-        status: "Succeed",
-        message: "files has saved"
-      })
-    } catch (err) {
-      res.status(400).json({
-        status: "Error",
-        message: 'Files has not saved'
-      })
-    }
-  })
 coursesRouter.route('/upload/:filename?')
   .post(upload.single('file'), (req, res) => {
     console.log(req.file)
