@@ -1,12 +1,8 @@
 const express = require('express')
-// const file = require('../APIFeatures/fileController.cjs')
 const coursesRouter = express.Router();
 
 const coursesFunctions = require('../Functions/CoursesFunctions.cjs')
-const gridStorage = require("../APIFeatures/UploadsImage.js");
 const {upload, getFile} = require("../APIFeatures/fileController.cjs");
-
-
 
 
 coursesRouter.route('/singleCourse')
