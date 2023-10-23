@@ -13,11 +13,12 @@ coursesRouter.route('/teacher/:idTeacher')
   .get(coursesFunctions.getCourses)
 coursesRouter.route('/course/:courseId')
   .get(coursesFunctions.getCourse)
-coursesRouter.route('/course/user/:id')
-  .get(coursesFunctions.getCourseByUserId)
+coursesRouter.route('/user/:id')
+  .get(coursesFunctions.getCoursesByUserId)
 
 coursesRouter.route('/updateMembers/:courseId')
   .patch(coursesFunctions.updateCourse)
+
 
 coursesRouter.route('/upload/:filename?')
   .post(upload.single('file'), (req, res) => {

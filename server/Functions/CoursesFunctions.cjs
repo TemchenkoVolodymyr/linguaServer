@@ -37,12 +37,11 @@ exports.getCourses = async (req, res) => {
    let filter = {}
    if (joinedUserId) {
       filter = {
-         "course.members": joinedUserId
+         "course.members":{$in:[ joinedUserId]}
       }
-      if (idTeacher) {
-         filter = {
-            "teacher": idTeacher
-         }
+   } else if (idTeacher) {
+      filter = {
+         "teacher": idTeacher
       }
    }
 
@@ -80,14 +79,14 @@ exports.getCourse = async (req, res) => {
    }
 }
 
-exports.getCourseByUserId = async (req,res) => {
+exports.getCoursesByUserId = async (req,res) => {
 
    const {id} = req.params
 
-   const foundCourse = await Courses.findOne({"course.members":{
+   const foundCourses = await Courses.find({"course.members":{
       $in:[id]}});
 
-   if(!foundCourse) {
+   if(!foundCourses) {
       res.status(400).json({
          status:"Not found",
          message:"Document has not found"
@@ -95,7 +94,7 @@ exports.getCourseByUserId = async (req,res) => {
    }else{
       res.status(200).json({
          status:"Succeed",
-         foundCourse
+         foundCourses
       })
    }
 }
