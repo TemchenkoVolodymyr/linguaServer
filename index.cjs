@@ -50,6 +50,9 @@ io.on("connection", (socket) => {
   // socket.on("typing", (user) => {
   //   io.emit("userTyping", user)
   // })
+  socket.on('courseMsg',(idCourse) => {
+    io.emit('courseMsgResponse',idCourse)
+  })
 
   // disconnect  / set online false for  user who was log out
   socket.on("disconnect", () => {
