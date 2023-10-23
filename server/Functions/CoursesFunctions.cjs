@@ -84,7 +84,7 @@ exports.getCourseByUserId = async (req,res) => {
 
    const {id} = req.params
 
-   const foundCourse = await Courses.findOne({members:{
+   const foundCourse = await Courses.findOne({"course.members":{
       $in:[id]}});
 
    if(!foundCourse) {
