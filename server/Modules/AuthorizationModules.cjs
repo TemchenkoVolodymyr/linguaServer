@@ -28,19 +28,21 @@ const authSchema = new mongoose.Schema({
   date: String,
   online:Boolean,
   user: {
-    name: {
-      type: String,
-      trim: true,
-      required: [false,'Not a required'],
-      unique: [false,'Not a unique'],
-    },
-    status: String,
-    experience: String,
-    bio: String,
-    languagesKnow: [String] | [],
-    languagesLearn: [String] | [],
-    userTag:String,
-    photo:String,
+    data:{
+      name: {
+        type: String,
+        trim: true,
+        required: [false,'Not a required'],
+        unique: [false,'Not a unique'],
+      },
+      status: String,
+      experience: String,
+      bio: String,
+      languagesKnow: [String] | [],
+      languagesLearn: [String] | [],
+      userTag:String,
+      photo:String,
+    }
   } | null,
 })
 

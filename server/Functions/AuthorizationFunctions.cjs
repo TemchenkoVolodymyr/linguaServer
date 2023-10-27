@@ -15,14 +15,17 @@ exports.signup = catchAsync(async (req, res, next) => {
       token: "",
       online: true,
       user: {
-         name: "",
-         status: "",
-         userTag: "",
-         experience: "",
-         bio: "",
-         photo: "",
-         languagesKnow: [],
-         languagesLearn: [],
+         data:{
+            name: "",
+            status: "",
+            userTag: "",
+            experience: "",
+            bio: "",
+            photo: "",
+            languagesKnow: [],
+            languagesLearn: [],
+         }
+
       }
 
    })
@@ -33,7 +36,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 exports.login = catchAsync(async (req, res, next) => {
 
    const {email, password} = req.body;
-console.log(`email` + email)
+
    if (!email || !password) {
       return next(new AppError('Please provide email and password', 400))
    }
