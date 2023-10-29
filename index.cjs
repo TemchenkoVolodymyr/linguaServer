@@ -17,8 +17,8 @@ const path = require('path')
 const authUsers = require('./server/Modules/AuthorizationModules.cjs')
 app.use(helmet());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
-app.use(cors({origin: "http://localhost:5173"}));
-app.options("http://localhost:5173", cors());
+app.use(cors({origin: "https://linguaswap.space"}));
+app.options("https://linguaswap.space", cors());
 
 
 app.use(express.json())
@@ -27,7 +27,7 @@ const {Server} = require('socket.io')
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://linguaswap.space",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["lingua-header"],
     credentials: true
