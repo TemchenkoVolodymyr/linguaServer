@@ -11,8 +11,9 @@ const path = require('path')
 const authUsers = require('./server/Modules/AuthorizationModules.cjs')
 
 app.use(helmet());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+
 app.use(cors({origin: ["https://www.linguaswap.space","http://localhost:5173","https://lingua-swap-liart.vercel.app","http://lingua-swap-liart.vercel.app","http://www.linguaswap.space"]}));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 app.options(["https://www.linguaswap.space","http://localhost:5173","https://lingua-swap-liart.vercel.app","http://lingua-swap-liart.vercel.app","http://www.linguaswap.space"], cors());
 
 // app.use(cors({origin: "*"}));
