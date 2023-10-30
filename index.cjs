@@ -1,33 +1,34 @@
 const express = require('express')
 const mongoose = require("mongoose");
 const cors = require('cors');
-const bodyParser = require('body-parser')
 const app = express()
 const PORT = process.env.PORT || 3000
 const helmet = require("helmet");
 const http = require('http')
-const multer = require('multer')
-const GridFsStorage = require('multer-gridfs-storage')
-const Grid = require('gridfs-stream')
-
 const ErrorHandler = require("./server/APIFeatures/ErrorHandler.cjs");
 const server = http.createServer(app);
 const path = require('path')
-// const dotenv = require('dotenv').config()
 const authUsers = require('./server/Modules/AuthorizationModules.cjs')
+
 app.use(helmet());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 app.use(cors({origin: ["https://www.linguaswap.space","http://localhost:5173","https://lingua-swap-liart.vercel.app"]}));
 app.options(["https://www.linguaswap.space","http://localhost:5173","https://lingua-swap-liart.vercel.app"], cors());
 
+app.use(cors({origin: "*"}));
+// https://www.linguaswap.space
+app.options("*", cors());
+// https://www.linguaswap.space
+
 
 app.use(express.json())
-
 const {Server} = require('socket.io')
 
 const io = new Server(server, {
   cors: {
+
     origin: ["https://www.linguaswap.space","http://localhost:5173","https://lingua-swap-liart.vercel.app"],
+    // https://www.linguaswap.space
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["lingua-header"],
     credentials: true
@@ -53,10 +54,6 @@ io.on("connection", (socket) => {
     io.emit("privateResponse", id)
   })
 
-  //typing
-  // socket.on("typing", (user) => {
-  //   io.emit("userTyping", user)
-  // })
   socket.on('courseMsg',(idCourse) => {
     io.emit('courseMsgResponse',idCourse)
   })
