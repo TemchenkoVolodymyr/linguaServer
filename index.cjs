@@ -12,8 +12,8 @@ const authUsers = require('./server/Modules/AuthorizationModules.cjs')
 
 app.use(helmet());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
-app.use(cors({origin: ["https://www.linguaswap.space","http://localhost:5173","https://lingua-swap-liart.vercel.app"]}));
-app.options(["https://www.linguaswap.space","http://localhost:5173","https://lingua-swap-liart.vercel.app"], cors());
+app.use(cors({origin: ["https://www.linguaswap.space","http://localhost:5173","https://lingua-swap-liart.vercel.app","http://lingua-swap-liart.vercel.app","https://www.linguaswap.space"]}));
+app.options(["https://www.linguaswap.space","http://localhost:5173","https://lingua-swap-liart.vercel.app","http://lingua-swap-liart.vercel.app","https://www.linguaswap.space"], cors());
 
 // app.use(cors({origin: "*"}));
 // // https://www.linguaswap.space
@@ -27,7 +27,7 @@ const {Server} = require('socket.io')
 const io = new Server(server, {
   cors: {
 
-    origin: ["https://www.linguaswap.space","http://localhost:5173","https://lingua-swap-liart.vercel.app"],
+    origin: ["https://www.linguaswap.space","http://localhost:5173","https://lingua-swap-liart.vercel.app","http://lingua-swap-liart.vercel.app","https://www.linguaswap.space"],
     // https://www.linguaswap.space
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["lingua-header"],
