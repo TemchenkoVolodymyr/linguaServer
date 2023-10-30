@@ -15,9 +15,9 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 app.use(cors({origin: ["https://www.linguaswap.space","http://localhost:5173","https://lingua-swap-liart.vercel.app"]}));
 app.options(["https://www.linguaswap.space","http://localhost:5173","https://lingua-swap-liart.vercel.app"], cors());
 
-app.use(cors({origin: "*"}));
-// https://www.linguaswap.space
-app.options("*", cors());
+// app.use(cors({origin: "*"}));
+// // https://www.linguaswap.space
+// app.options("*", cors());
 // https://www.linguaswap.space
 
 
