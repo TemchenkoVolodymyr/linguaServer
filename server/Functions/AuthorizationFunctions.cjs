@@ -3,6 +3,7 @@ const catchAsync = require("../APIFeatures/catchAsync.cjs");
 const {createSendToken} = require("../APIFeatures/CreateToken.cjs");
 const Auth = require('../Modules/AuthorizationModules.cjs')
 const ErrorHandler = require("../APIFeatures/ErrorHandler.cjs");
+const {id} = require("yarn/lib/cli.js");
 
 
 exports.signup = catchAsync(async (req, res, next) => {
@@ -117,7 +118,7 @@ exports.updateProfile = catchAsync(async (req, res, next) => {
 })
 
 exports.saveToken = async (req, res) => {
-
+console.log(idUser)
    // const {token,imagePath} = req.body
    const {idUser} = req.params
 
