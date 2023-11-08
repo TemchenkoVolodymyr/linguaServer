@@ -6,24 +6,18 @@ const mainChatFunctions = require("../../Functions/MainChat/MainChatFunctions.cj
 
 mainChatRouter.route('/create')
 
-   .post(mainChatFunctions.createMainChat)
+  .post(mainChatFunctions.createMainChat)
 
-   .post(mainChatFunctions.createMainChat)
-
-
-// mainChatRouter.route('/:idChat')
-//    .get(mainChatFunctions.getChat)
 mainChatRouter.route('/chat/:firstMember/:secondMember')
 
-   .get(mainChatFunctions.getMainChat)
-
+  .get(mainChatFunctions.getMainChat)
 
 mainChatRouter.route('/chats/dialogs/:idUser')
-   .get(mainChatFunctions.getMainChats)
+  .get(mainChatFunctions.getMainChats)
 
 mainChatRouter.route('/chatById/:idChat')
-   .get(mainChatFunctions.getMainChat)
-   .patch(mainChatFunctions.addMessageToMainChat)
+  .get(mainChatFunctions.getMainChat)
+  .patch(mainChatFunctions.addMessageToMainChat)
 
 module.exports = mainChatRouter
 

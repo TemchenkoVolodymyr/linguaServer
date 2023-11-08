@@ -77,7 +77,7 @@ const chatRouter = require('./server/Routers/ChatRouter.cjs');
 const teacherChatRouter = require('./server/Routers/ChatWithTeachersRouter.cjs')
 const onlineUsersRouter = require('./server/Routers/onlineUsersRouters.cjs')
 const mainChatRouter = require('./server/Routers/MainChat/MainChatRouter.cjs')
-const globalErrorHandler = require('./server/controllers/ErrorHandlerController.cjs')
+const globalErrorHandler = require('./server/errorControllers/ErrorHandlerController.cjs')
 
 app.use('/chat', chatRouter);
 app.use('/languages', languageRouter);

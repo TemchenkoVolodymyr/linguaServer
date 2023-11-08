@@ -1,9 +1,8 @@
 
 const Courses = require('../Modules/CoursesModule.cjs')
-const ErrorHandler = require("../APIFeatures/ErrorHandler.cjs");
+const {catchAsyncError} = require("../errorControllers/CatchAsyncError.cjs");
 
-exports.createCourse = async (req, res, next) => {
-
+exports.createCourse = catchAsyncError(async (req, res, next) => {
 
    const createCourse = await Courses.create({
       teacher: req.body.data.teacher,
@@ -20,19 +19,14 @@ exports.createCourse = async (req, res, next) => {
          description:req.body.data.course.description
       }
    })
-   try {
       await createCourse.save()
       res.status(200).json({
          status: "Created",
          createCourse
       })
-   } catch (err) {
-      return next(new ErrorHandler(err, 400))
-   }
+})
 
-}
-
-exports.getCourses = async (req, res) => {
+exports.getCourses = catchAsyncError(async (req, res) => {
 
    const {joinedUserId, idTeacher} = req.params
    let filter = {}
@@ -47,60 +41,39 @@ exports.getCourses = async (req, res) => {
    }
 
    const courses = await Courses.find(filter)
-
-   if (courses) {
       res.status(200).json({
          status: "Succeed",
          courses
       })
-   } else {
-      res.status(400).json({
-         status: "Clear",
-         message: "Courses were not found"
-      })
-   }
-}
+})
 
-exports.getCourse = async (req, res) => {
-   console.log('getCourse')
+exports.getCourse = catchAsyncError(async (req, res) => {
+
    const {courseId} = req.params
-
    const course = await Courses.findById(courseId)
 
-   if (course) {
       res.status(200).json({
          status: "Succeed",
          course
       })
-   } else {
-      res.status(400).json({
-         status: "Clear",
-         message: "Courses was not found"
-      })
-   }
-}
 
-exports.getCoursesByUserId = async (req,res) => {
+})
+
+exports.getCoursesByUserId = catchAsyncError(async (req,res) => {
 
    const {id} = req.params
 
    const foundCourses = await Courses.find({"course.members":{
       $in:[id]}});
 
-   if(!foundCourses) {
-      res.status(400).json({
-         status:"Not found",
-         message:"Document has not found"
-      })
-   }else{
       res.status(200).json({
          status:"Succeed",
          foundCourses
       })
-   }
-}
 
-exports.updateCourse = async (req, res, next) => {
+})
+
+exports.updateCourse = catchAsyncError(async (req, res, next) => {
 
 
    const {courseId} = req.params
@@ -109,16 +82,8 @@ exports.updateCourse = async (req, res, next) => {
    const updateCourse = await Courses.findByIdAndUpdate(courseId,
       {$addToSet: {"course.members": {$each: [updateValue]}}}
    )
-
-   if (!updateCourse) {
-      res.status(400).json({
-         status: "Error",
-         message: "Some error to update course"
-      })
-   } else {
       res.status(200).json({
          status: "Succeed",
          updateCourse
       })
-   }
-}
+})
