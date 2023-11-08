@@ -15,27 +15,17 @@ app.use(helmet());
 app.use(cors({origin: ["https://linguaswap.space", "http://localhost:5173", "https://lingua-swap-liart.vercel.app", "http://lingua-swap-liart.vercel.app", "http://www.linguaswap.space"]}));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 app.options(["https://linguaswap.space", "http://localhost:5173", "https://lingua-swap-liart.vercel.app", "http://lingua-swap-liart.vercel.app", "http://www.linguaswap.space"], cors());
-
-// app.use(cors({origin: "*"}));
-// // https://www.linguaswap.space
-// app.options("*", cors());
-// https://www.linguaswap.space
-
-
 app.use(express.json())
 const {Server} = require('socket.io')
 
 const io = new Server(server, {
   cors: {
-
     origin: ["https://linguaswap.space", "http://localhost:5173", "https://lingua-swap-liart.vercel.app", "http://lingua-swap-liart.vercel.app", "http://www.linguaswap.space"],
-    // https://www.linguaswap.space
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["lingua-header"],
     credentials: true
   }
 });
-
 
 io.on("connection", (socket) => {
   console.log(`User has connected ${socket.id}`)
@@ -61,7 +51,7 @@ io.on("connection", (socket) => {
     io.emit('courseMsgResponse', idCourse)
   })
 
-  // disconnect  / set online false for  user who was log out
+  // disconnect
   socket.on("disconnect", () => {
     console.log(`User id who has left ${socket.userId}`)
     if (socket.userId) {
@@ -79,12 +69,7 @@ mongoose.connect(process.env.MONGODB_URI, {
   useFindAndModify: false,
 }).then(() => console.log('DB connection successful'));
 
-
-// uploads image
-
-
 /// routers
-
 const languageRouter = require('./server/Routers/LanguageRouter.cjs');
 const authRouter = require('./server/Routers/AuthorizationRouter.cjs');
 const coursesRouter = require('./server/Routers/CoursesRouter.cjs');
@@ -107,6 +92,18 @@ app.all('*', (req, res, next) => {
   next(new ErrorHandler(`Url with this path ${req.originalUrl} doesnt exist`), 404);
 })
 
+app.use((err,req,res,next) => {
+  console.log(err.stack);
+
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || "error";
+
+  res.status(err.statusCode).json({
+    status:err.status,
+    message:err.message
+  });
+
+})
 
 server.listen(PORT, () => {
   console.log(`App running on ${PORT}`)
