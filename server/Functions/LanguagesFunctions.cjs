@@ -17,26 +17,23 @@ exports.getLanguages = async (req,res) => {
     })
   }
 }
-
-exports.createLanguage = async (req,res) => {
+const catchAsyncError = fn => {
+  return (req,res,next) => {
+    fn(req,res,next).catch(next)
+  };
+};
+exports.createLanguage =  catchAsyncError(async (req,res) => {
 
   const {language,numberOTeachers} = req.body
 
-  const createLanguage = new Language({
+  const createLanguage = await Language.create({
     language ,numberOTeachers
   })
 
-  try{
     const response = await createLanguage.save()
     res.status(200).json({
       status:"Succeed",
       response
     })
-  } catch (error) {
-    res.status(500).json({
-      status:"Failed create language",
-      error
-    })
-  }
-}
+})
 

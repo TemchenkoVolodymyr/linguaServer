@@ -77,6 +77,7 @@ const chatRouter = require('./server/Routers/ChatRouter.cjs');
 const teacherChatRouter = require('./server/Routers/ChatWithTeachersRouter.cjs')
 const onlineUsersRouter = require('./server/Routers/onlineUsersRouters.cjs')
 const mainChatRouter = require('./server/Routers/MainChat/MainChatRouter.cjs')
+const globalErrorHandler = require('./server/controllers/ErrorHandlerController.cjs')
 
 app.use('/chat', chatRouter);
 app.use('/languages', languageRouter);
@@ -92,18 +93,7 @@ app.all('*', (req, res, next) => {
   next(new ErrorHandler(`Url with this path ${req.originalUrl} doesnt exist`), 404);
 })
 
-app.use((err,req,res,next) => {
-  console.log(err.stack);
-
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || "error";
-
-  res.status(err.statusCode).json({
-    status:err.status,
-    message:err.message
-  });
-
-})
+app.use(globalErrorHandler)
 
 server.listen(PORT, () => {
   console.log(`App running on ${PORT}`)
