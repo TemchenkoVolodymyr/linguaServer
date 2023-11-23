@@ -118,8 +118,7 @@ exports.updateProfile = catchAsync(async (req, res, next) => {
 })
 
 exports.saveToken = async (req, res) => {
-console.log(idUser)
-   // const {token,imagePath} = req.body
+
    const {idUser} = req.params
 
    let dataToUpdate = {}
